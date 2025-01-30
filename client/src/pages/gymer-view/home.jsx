@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import bannerOne from "../../assets/banner1.jpg";
 import bannerTwo from "../../assets/banner2.jpg";
 import bannerThree from "../../assets/banner3.jpg";
@@ -7,14 +7,13 @@ import bannerFive from "../../assets/banner5.jpg";
 import bannerSix from "../../assets/banner6.jpg";
 import bannerSeven from "../../assets/banner7.jpg";
 import { Button } from "@/components/ui/button";
-import { IoManSharp, IoWomanSharp } from "react-icons/io5";
+import { IoManSharp } from "react-icons/io5";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCourseDetails,
-  fetchFilterCourse,
-  fetchHomeCourse,
+  fetchHomeCourse
 } from "@/store/gyn/courseSlice";
 import GymCourseTile from "@/components/gymer-view/courseTile";
 import { Link, useNavigate } from "react-router-dom";
@@ -81,6 +80,7 @@ const GymHome = () => {
   const { homeCourses, courseDetails } = useSelector(
     (state) => state.gymCourse
   );
+  
   const { user } = useSelector((state) => state.auth);
   const [openDiagalog, setOpenDiagalog] = useState(false);
   const { toast } = useToast();
@@ -105,9 +105,16 @@ const GymHome = () => {
   };
 
   // get course details
-  const handelGetCourseDetails = (id) => {
+  const handelGetCourseDetails = (id) => {  
     dispatch(fetchCourseDetails(id));
+    setOpenDiagalog(true)
   };
+
+
+
+
+  console.log(courseDetails, "course details", openDiagalog);
+  
 
   // handelCart
   const handelPayment = (id) => {
@@ -158,7 +165,8 @@ const GymHome = () => {
   };
 
   const handelGetAccessoriesDetails = (id) => {
-    dispatch(fetchAccessoriesDetails(id));
+    dispatch(fetchAccessoriesDetails(id))
+    setOpenDiagalog(true);
   };
 
   // handelCart
@@ -194,7 +202,7 @@ const GymHome = () => {
 
   // auto change slide
   useEffect(() => {
-    const time = setInterval(() => {
+   setInterval(() => {
       setCurrentBanner((previouseSlie) => (previouseSlie + 1) % slides.length);
     }, 3000);
   }, []);
@@ -203,21 +211,17 @@ const GymHome = () => {
   useEffect(() => {
     dispatch(fetchHomeCourse());
     dispatch(fetchHomeAccessories());
-  }, [dispatch]);
+  }, []);
 
-  // course details dialog
-  useEffect(() => {
-    if (courseDetails !== null) {
-      setOpenDiagalog(true);
-    }
-  }, [courseDetails]);
-  // accessories details dialog
-  useEffect(() => {
-    if (accessoriesDetails !== null) {
-      setOpenDiagalog(true);
-    }
-  }, [accessoriesDetails]);
-
+  // // course details and accessories dialog
+  // useEffect(() => { 
+  //   setOpenDiagalog((prev) => {
+  //     const shouldOpen = Boolean(courseDetails || accessoriesDetails);
+  //     return prev !== shouldOpen ? shouldOpen : prev;
+  //   });
+  // }, [courseDetails, accessoriesDetails]);
+  
+  
   return (
     <div className="flex flex-col min-h-screen">
       {/* image slider container */}
@@ -287,6 +291,7 @@ const GymHome = () => {
           {homeCourses?.map((courseItem) => (
             <GymCourseTile
               handelGetCourseDetails={handelGetCourseDetails}
+              accessories={false}
               key={courseItem?._id}
               course={courseItem}
               isPaymentStart={isPaymentStart}
@@ -296,6 +301,7 @@ const GymHome = () => {
         </div>
         <CourseDetailsDialgo
           courseDetails={courseDetails}
+          accessories={false}
           open={openDiagalog}
           setOpen={setOpenDiagalog}
           handelAddToCart={handelPayment}
@@ -342,6 +348,7 @@ const GymHome = () => {
         </div>
         <CourseDetailsDialgo
           courseDetails={accessoriesDetails}
+          accessories={true}
           open={openDiagalog}
           setOpen={setOpenDiagalog}
           handelAddToCart={handelAddToCart}

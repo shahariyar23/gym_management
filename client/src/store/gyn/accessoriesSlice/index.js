@@ -19,7 +19,6 @@ export const fetchFilterAccessories = createAsyncThunk(
     });
     const res = await axios.get(
       `http://localhost:5000/api/gym/accessories/get?${query}`,
-      {},
       {
         withCredentials: true,
       }
@@ -44,7 +43,6 @@ export const fetchAccessoriesDetails = createAsyncThunk(
   async (id) => {
     const res = await axios.get(
       `http://localhost:5000/api/gym/accessories/getDetails/${id}`,
-      {},
       {
         withCredentials: true,
       }

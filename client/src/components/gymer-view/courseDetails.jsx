@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { StarIcon, User } from "lucide-react";
+import { User } from "lucide-react";
 import { Input } from "../ui/input";
 import { useDispatch, useSelector } from "react-redux";
 import { setCourseDetails } from "@/store/gyn/courseSlice";
@@ -12,6 +12,7 @@ import { Label } from "../ui/label";
 import { StarRating } from "../common/star-rating";
 import { addReview, getReview } from "@/store/gyn/reviewSlice";
 import { useToast } from "@/hooks/use-toast";
+import { setAccessoriesDetails } from "@/store/gyn/accessoriesSlice";
 
 const CourseDetailsDialgo = ({
   accessories,
@@ -20,6 +21,7 @@ const CourseDetailsDialgo = ({
   setOpen,
   handelAddToCart,
 }) => {
+  
   const [reviewMsg, setReviewMsg] = useState("");
   const [rating, setRating] = useState(0);
   const { user } = useSelector((state) => state.auth);
@@ -38,6 +40,7 @@ const CourseDetailsDialgo = ({
   const handelOpenClose = () => {
     setOpen(false);
     dispatch(setCourseDetails());
+    dispatch(setAccessoriesDetails());
     setRating(0);
     setReviewMsg("");
   };
@@ -47,7 +50,7 @@ const CourseDetailsDialgo = ({
       addReview({
         productId: courseDetails?._id,
         userId: user?.id,
-        userName: user.userName,
+        userName: user?.userName,
         reviewMessage: reviewMsg,
         reviewValue: rating,
       })
@@ -67,15 +70,6 @@ const CourseDetailsDialgo = ({
       }
     });
   };
-
-  // const averageReview =
-  //   reviewList && reviewList.length > 0
-  //     ? reviewList.reduce(
-  //         (sum, reviewItem) => sum + reviewItem.reviewValue,
-  //         0
-  //       ) / reviewList
-  //     : 0;
-  // console.log(courseDetails, "review");
 
   return (
     <Dialog open={open} onOpenChange={handelOpenClose}>

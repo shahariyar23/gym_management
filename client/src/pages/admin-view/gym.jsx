@@ -2,7 +2,7 @@ import CourseImageUploader from "@/components/admin-vew/image-uploader";
 import CommonFrom from "@/components/common/from";
 import { Button } from "@/components/ui/button";
 import { addCourseFromElement } from "@/config";
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Sheet,
   SheetContent,

@@ -96,8 +96,8 @@ const AdminOrderDetails = ({ orderDetails, setOpenDetailsDialog }) => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {orderDetails && orderDetails?.cartItems.length > 0
-                    ? orderDetails?.cartItems.map((item) => (
+                  {orderDetails && orderDetails?.cartItems?.length > 0
+                    ? orderDetails?.cartItems?.map((item) => (
                         <TableRow key={item?._id}>
                           <TableCell className="font-medium">
                             {item?.title}
